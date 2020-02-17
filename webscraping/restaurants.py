@@ -107,7 +107,7 @@ def get_menus(menu_links):
                 attr_dict = dict()
                 attr_dict["category"] = category
                 attr_dict["size"] = td_tags[1].text
-                attr_dict["price"] = td_tags[2].text[1:]
+                attr_dict["price"] = td_tags[2].text
                 item_dict[td_tags[0].text] = attr_dict
                 items_list.append(item_dict)
 
