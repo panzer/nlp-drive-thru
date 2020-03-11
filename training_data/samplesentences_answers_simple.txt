@@ -1,0 +1,95 @@
+I ’ll have two cheeseburgers and two large sodas .
+[cheeseburger 2] [Coke 2]
+
+I ’d like 3 hamburgers , two with cheese , and a large soda .
+[hamburger 3] [soda 1]
+
+Also , a side of medium fries .
+[fries 1]
+
+Can I have 2 crispy chicken sandwiches? Make one a combo with fries. No pickles.
+[crispy chicken sandwich 2] [fries 1]
+
+One black coffee.
+[coffee 1]
+
+Uh, okay. A McGriddle, hash browns, an iced coffee, and a 20 piece McNuggets.
+[McGriddle 1] [hash browns 1] [iced coffee 1] [McNuggets 1]
+
+Hello could I have one crispy chicken sandwich with a side of fries, please?
+[crispy chicken sandwich 1] [fries 1]
+
+I’d like two cheeseburgers, a large fries, an order of 20 piece McNuggets, and two medium sodas
+[cheeseburger 2] [fries 1] [McNuggets 1] [soda 2]
+
+I'll have one cheeseburger, two hamburgers, a black coffee, and a large soda
+[cheeseburger 1] [hamburger 2] [coffee 1] [soda 1]
+
+Just a large soda would be great
+[soda 1]
+
+Okay so I want two orders of hash browns, a coffee with cream, and a McGriddle
+[hash browns 2] [coffee 1] [McGriddle 1]
+
+No wait, make that two McGriddles
+[McGriddle 2]
+
+10 piece McNuggets and two Filet-O-Fish with, uh, oh a small McFlurry
+[McNuggets 1] [Filet-O-Fish 2] [McFlurry 1]
+
+Okay here we go I'd like two cheeseburgers, one hamburger, three crispy chicken sandwiches, one Big Mac, a Quarter Pounder, six medium sodas, and a medium McFlurry
+[cheeseburger 2] [hamburger 1] [crispy chicken sandwiches 3] [Big Mac 1] [Quarter Pounder 1] [soda 6] [McFlurry 1]
+
+Give me the crispy chicken sandwich with an order of large fries and a 20 piece McNuggets
+[crispy chicken sandwich 1] [fries 1] [McNuggets 1]
+
+Listen, I need twenty-four hash browns and I need them quick
+[hash browns 24]
+
+Hey I'd like one sausage McMuffin and one McGriddle please with a large black coffee
+[McMuffin 1] [McGriddle 1] [coffee 1]
+
+Then I'll just have the one Filet-O-Fish with large fries and a soda
+[Filet-O-Fish 1] [fries 1] [soda 1]
+
+Could I get three Big Macs and two large fries please?
+[Big Mac 3] [fries 2]
+
+Just a chocolate shake for me please
+[shake 1]
+
+Good morning just two iced coffees for me
+[iced coffee 2]
+
+She wants a 20 piece McNuggets and a small fries if I remember correctly
+[McNuggets 1] [fries 1]
+
+Hash browns, iced coffee, and a sausage McMuffin
+[hash browns 1] [iced coffee 1] [McMuffin 1]
+
+I came here for one Big Mac and one Quarter Pounder with two McFlurries
+[Big Mac 1] [Quarter Pounder 1] [McFlurry 2]
+
+I want two crispy chicken sandwiches, an order of hashbrowns, two chocolate shakes, and oh, uh, one more crispy chicken sandwich
+[crispy chicken sandwich 3] [hash browns 1] [shake 2]
+
+All I need is four orders of medium fries
+[fries 4]
+
+One chocolate shake and a small fries please
+[shake 1] [fries 1]
+
+My son would like a cheeseburger with small fries and I will have a Quarter Pounder with large fries
+[cheeseburger 1] [fries 2] [Quarter Pounder 1]
+
+No, I wanted two 20 piece McNuggets and four hash browns
+[McNuggets 2] [hash browns 4]
+
+For me I'll have one Big Mac and one iced coffee
+[Big Mac 1] [iced coffee 1]
+
+Hello I'd love two McFlurries and one chocolate shake please
+[McFlurry 2] [shake 1]
+
+
+
