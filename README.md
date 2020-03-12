@@ -16,7 +16,3 @@
     - Generate even larger set from HMM
 4. Choose model
 5. Prototype model
-
-
-## Timeline
-Web scraping menu and tagged seed sentences for week 1
