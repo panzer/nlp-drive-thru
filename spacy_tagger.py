@@ -16,6 +16,7 @@ import random
 from pathlib import Path
 import spacy
 from spacy.util import minibatch, compounding
+from data_management import input_filepath
 
 
 # You need to define a mapping from your data's part-of-speech tag names to the
@@ -25,7 +26,7 @@ from spacy.util import minibatch, compounding
 # You may also specify morphological features for your tags, from the universal
 # scheme.
 TAG_MAP = {
-    "N": {"pos": "NOUN"},
+    "II": {"pos": "NOUN"},
     "V": {"pos": "VERB"},
     "J": {"pos": "ADJ"}
 }
@@ -35,6 +36,12 @@ TAG_MAP = {
 # tokenization. If not, you can always add a 'words' key to the annotations
 # that specifies the gold-standard tokenization, e.g.:
 # ("Eatblueham", {'words': ['Eat', 'blue', 'ham'], 'tags': ['V', 'J', 'N']})
+with open(input_filepath("samplesentences.txt")) as f:
+    setences = [line for line in f]
+
+# with open(input_filepath("training_tags.txt")) as f:
+#     setences = [line for line in f]
+
 TRAIN_DATA = [
     ("I like green eggs", {"tags": ["N", "V", "J", "N"]}),
     ("Eat blue ham", {"tags": ["V", "J", "N"]}),
@@ -66,7 +73,7 @@ def main(lang="en", output_dir="outputs/spacy_tagger", n_iter=25):
         print("Losses", losses)
 
     # test the trained model
-    test_text = "I like blue eggs"
+    test_text = "I like five cheeseburgers and three small fries"
     doc = nlp(test_text)
     print("Tags", [(t.text, t.tag_, t.pos_) for t in doc])
 
