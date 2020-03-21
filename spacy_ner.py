@@ -28,6 +28,7 @@ Last tested with: v2.1.0
 """
 from __future__ import unicode_literals, print_function
 
+from typing import List
 import plac
 import random
 from pathlib import Path
@@ -49,8 +50,13 @@ LABEL = MENU_ITEM
 with open(input_filepath("samplesentences.txt")) as f:
     sentences = [line for line in f]
 
+nlp = spacy.load("en_core_web_sm")
+def get_standard_entities(doc_str: str) -> List[tuple]:
+    doc = nlp(doc_str)
+    return [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents if ent.label_ == "CARDINAL"]
+
 with open(input_filepath("training_entities.txt")) as f:
-    entities = [{"entities": eval(line)} for line in f]
+    entities = [{"entities": get_standard_entities(sentence) + eval(cust_labels)} for (cust_labels, sentence) in zip(f, sentences)]
 
 TRAIN_DATA = list(zip(sentences, entities))
 
@@ -60,7 +66,7 @@ TRAIN_DATA = list(zip(sentences, entities))
     output_dir=("Optional output directory", "option", "o", Path),
     n_iter=("Number of training iterations", "option", "n", int),
 )
-def main(model=None, new_model_name="animal", output_dir="outputs/spacy_ner", n_iter=15):
+def main(model="en_core_web_sm", new_model_name="menuitems", output_dir="outputs/spacy_ner", n_iter=25):
     """Set up the pipeline and entity recognizer, and train the new entity."""
     random.seed(0)
     if model is not None:
@@ -101,7 +107,7 @@ def main(model=None, new_model_name="animal", output_dir="outputs/spacy_ner", n_
             print("Losses", losses)
 
     # test the trained model
-    test_text = "Can I have a cheeseburger and a soda with fries on the side?"
+    test_text = "Can I have two cheeseburgers and a soda with three Filet-O-Fish on the side?"
     doc = nlp(test_text)
     print("Entities in '%s'" % test_text)
     for ent in doc.ents:
