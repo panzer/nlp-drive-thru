@@ -1,6 +1,6 @@
-I ’ll have two cheeseburgers and two large sodas .
-I ’d like 3 hamburgers , two with cheese , and a large soda .
-Also , a side of medium fries .
+I'll have two cheeseburgers and two large sodas.
+I’d like 3 hamburgers, two with cheese, and a large soda.
+Also, a side of medium fries.
 Can I have 2 crispy chicken sandwiches? Make one a combo with fries. No pickles.
 One black coffee.
 Uh, okay. A McGriddle, hash browns, an iced coffee, and a 20 piece McNuggets.
@@ -29,6 +29,4 @@ My son would like a cheeseburger with small fries and I will have a Quarter Poun
 No, I wanted two 20 piece McNuggets and four hash browns
 For me I'll have one Big Mac and one iced coffee
 Hello I'd love two McFlurries and one chocolate shake please
-
-
 

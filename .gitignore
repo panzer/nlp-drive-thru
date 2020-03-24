@@ -1,0 +1,13 @@
+# Editors
+.idea
+.vscode
+.devcontainer
+
+# Python
+.pyc
+
+# Mac
+.DS_Store
+
+# Output files
+outputs/spacy_tagger
