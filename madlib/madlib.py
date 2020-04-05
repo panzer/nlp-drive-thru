@@ -10,14 +10,30 @@ menus = "../webscraping/menus.json"
 ten_percent = range(0,10)
 twenty_five_percent = range(0,4)
 filler = ["Uh", "Um", "Uhhhh", "Yeah", "Hmm"]
-quantities = ["one", "two", "three", "four"]
-like = "like"
+quantities = ["One", "Two", "Three", "Four"]
+like = "Like"
 templates = ["Can I get", "Could I get", "Could I just get", "I'll have", "I'd like", "I'll get", "Can I have", "I'll just have", "I'll just get", "Could I please have", "Can I please get", "Can I please have", "Could I please just get", "Could I please just have", "I would like", "I will have", "I will get", "Could I please have", "Can I please get", "I would like to have", "I would like to get"]
 modify_templates = ["Actually wait, could you make it", "Could you actually make it", "Could you change it to", "Can you actually change it to", "Wait, can it be", "Wait, can you make it", "Wait, could you make it", "Wait, could you change it to", "And can it be", "Sorry, could you change it to", "And can you change it to", "Sorry, could it be", "Sorry can it be"]
-also = "also"
+also = "Also"
 conjunctions = ["and", "with"]
-thanks = ["please", "thanks", "thank you", "that's it", "that'll be it", "that's all", "I think that's it", "that should be it", "that should be all", "that's it, I think", "that should be all, I think", "alright, that's it", "alright, that'll be it", "okay, that should be it"]
+thanks = ["please", "thanks", "thank you", "that's it", "that'll be it", "that's all", "I think that's it", "That should be it", "That should be all", "That's it, I think", "That should be all, I think", "Alright, that's it", "Alright, that'll be it", "Okay, that should be it"]
 
+#
+def fix_capitalization(s):
+    xs = s.split(" ")
+    result = ""
+    result += xs[0] + " "
+
+    for i in range(1, len(xs)):
+        if xs[i] != "I":
+            result += xs[i].lower() + " "
+        elif xs[i] == "." or xs[i] == ",":
+            result = result[:-1] + xs[i] + " "
+        elif xs[i] != " ":
+            result += xs[i] + " "
+
+    return result
+    
 #
 def sentence_order_weighted():
     x = random.choice(range(1,100))
@@ -155,7 +171,7 @@ def full_sample(j, ks):
     sentences = sentence_order_weighted()
 
     for i in range(0, sentences):
-        print(sentence(j, ks))
+        print(fix_capitalization(sentence(j, ks)))
 
 def main(x):
     j = open_json(menus)
