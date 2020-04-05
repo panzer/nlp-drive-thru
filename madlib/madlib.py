@@ -25,14 +25,12 @@ def fix_capitalization(s):
     result += xs[0] + " "
 
     for i in range(1, len(xs)):
-        if xs[i-1] == ".":
+        if xs[i-1] == "." or xs[i] == "I":
             result += xs[i] + " "
         elif xs[i] == "." or xs[i] == ",":
             result = result[:-1] + xs[i] + " "
-        elif xs[i] != "I":
-            result += xs[i].lower() + " "
         elif xs[i] != " ":
-            result += xs[i] + " "
+            result += xs[i].lower() + " "
 
     return result
     
