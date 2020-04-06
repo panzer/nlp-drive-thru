@@ -5,6 +5,7 @@
 import sys
 import json
 import random
+import string
 
 menus = "../webscraping/menus.json"
 ten_percent = range(0,10)
@@ -33,6 +34,34 @@ def fix_capitalization(s):
             result += xs[i].lower() + " "
 
     return result
+
+def generalize(w):
+    x = w.lower()
+    if "burger" in x:
+        return "burger"
+    elif "fries" in x:
+        return "fries"
+    elif "nuggets" in x:
+        return "nuggets"
+    elif "burrito" in x:
+        return "burrito"
+    elif "salad" in x:
+        return "salad"
+    elif "tenders" in x:
+        return "tenders"
+    elif "strips" in x:
+        return "chicken strips"
+    elif "soda" in x:
+        return "soda"
+    elif "– " in x:
+        return x.replace("– ", "")
+    elif "(" in x and ")" in x:
+        i1 = x.index("(")
+        i2 = x.index(")")
+
+        return x[:(i1 - 1)] + x[(i2 + 1):]        
+    else:
+        return w
     
 #
 def sentence_order_weighted():
@@ -141,10 +170,10 @@ def sentence(j, ks):
 
         if tenP() and not modify_item:
             modify_item = True
-            modified_item = item[0]
+            modified_item = generalize(item[0])
             original_q = q.lower()
 
-        sentence += item[0] + " "
+        sentence += generalize(item[0]) + " "
 
         if i < (orders - 1):
             sentence += random.choice(conjunctions) + " "
