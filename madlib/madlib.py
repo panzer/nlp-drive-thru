@@ -25,7 +25,7 @@ def fix_capitalization(s):
     result += xs[0] + " "
 
     for i in range(1, len(xs)):
-        if xs[i-1] == "." or xs[i] == "I":
+        if xs[i-1] == "." or xs[i] == "I" or "." in xs[i-1]:
             result += xs[i] + " "
         elif xs[i] == "." or xs[i] == ",":
             result = result[:-1] + xs[i] + " "
