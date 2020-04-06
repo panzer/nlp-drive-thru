@@ -66,7 +66,7 @@ TRAIN_DATA = list(zip(sentences, entities))
     output_dir=("Optional output directory", "option", "o", Path),
     n_iter=("Number of training iterations", "option", "n", int),
 )
-def main(model="en_core_web_sm", new_model_name="menuitems", output_dir="outputs/spacy_ner", n_iter=25):
+def main(model="en_core_web_sm", new_model_name="menuitems", output_dir="outputs/spacy_ner", n_iter=50):
     """Set up the pipeline and entity recognizer, and train the new entity."""
     random.seed(0)
     if model is not None:
