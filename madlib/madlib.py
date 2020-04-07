@@ -162,10 +162,10 @@ def sentence(j):
     modify_item = False
     modified_item = ""
     original_q = ""
-    original_s = ""
     items_list = []
 
     for i in range(0, orders):
+        original_s = ""
         if twentyfiveP():
             sentence += random.choice(filler) + " "
 
@@ -187,14 +187,14 @@ def sentence(j):
         item = get_item(j)
         if item[1] != "" and flip_coin():
             sentence += item[1] + " "
+            original_s = item[1]
 
         if tenP() and not modify_item:
             modify_item = True
             modified_item = generalize(item[0])
-            original_q = q.lower()
-            original_s = item[1]
+            original_q = q.lower()            
         else:
-            answer += answer_structure(generalize(item[0]), item[1], q) + " "
+            answer += answer_structure(generalize(item[0]), original_s, q) + " "
             items_list.append(generalize(item[0]))
 
         sentence += generalize(item[0]) + " "
