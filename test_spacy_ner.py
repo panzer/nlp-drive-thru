@@ -77,7 +77,7 @@ class OrderedItem:
 
     @classmethod
     def deserialize(cls, s: str) -> MenuItem:
-        item, amount, mod = s.split(",")
+        item, mod, amount = s.split(", ")
         return cls(
             menu_item=MenuItem.deserialize(item),
             amount=int(amount),
@@ -102,7 +102,8 @@ class OrderSummary:
         regex = r"\[(.*?)\]"
         matches = re.finditer(regex, s, re.MULTILINE)
         for match in matches:  # type: re.Match
-            ordered_item = OrderedItem.deserialize(match.group(0))
+            g = match.groups()
+            ordered_item = OrderedItem.deserialize(g[0])
             ret_val.ordered_items.append(ordered_item)
 
         return ret_val
@@ -141,10 +142,12 @@ def parse_doc(doc: Doc) -> OrderSummary:
             ))
     return OrderSummary(ordered_items=ordered_items)
 
-
-for test_text in TEST_SET:
-    print()
-    print(test_text)
-    doc = nlp(test_text)
-    print(parse_doc(doc))
+def main():
+    for test_text in TEST_SET:
+        print()
+        print(test_text)
+        doc = nlp(test_text)
+        print(parse_doc(doc))
     
+if __name__ == "__main__":
+    main()
