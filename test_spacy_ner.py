@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List, Dict
 import spacy
 from spacy.analysis import Doc, Token, Span
@@ -5,6 +7,7 @@ from pathlib import Path
 from data_management import output_filepath
 from word2number import w2n
 from dataclasses import dataclass, field
+import re
 
 output_dir = output_filepath("spacy_ner")
 output_dir = Path(output_dir)
@@ -33,6 +36,13 @@ def find_numbers_in_document(doc: Doc) -> List[int]:
 class Modifier:
     name: str
 
+    def serialize(self) -> str:
+        return f"{self.name}"
+
+    @classmethod
+    def deserialize(cls, s: str) -> Modifier:
+        return cls(name=s)
+
 @dataclass
 class MenuItem:
     name: str
@@ -40,6 +50,13 @@ class MenuItem:
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    def serialize(self) -> str:
+        return f"{self.name}"
+
+    @classmethod
+    def deserialize(cls, s: str) -> MenuItem:
+        return cls(name=s)
 
 @dataclass
 class Restaurant:
@@ -55,6 +72,18 @@ class OrderedItem:
     def __str__(self) -> str:
         return f"{self.menu_item} ({self.amount})"
 
+    def serialize(self) -> str:
+        return f"{self.menu_item.serialize()}, {self.amount}, {self.modifier.serialize()}"
+
+    @classmethod
+    def deserialize(cls, s: str) -> MenuItem:
+        item, amount, mod = s.split(",")
+        return cls(
+            menu_item=MenuItem.deserialize(item),
+            amount=int(amount),
+            modifier=Modifier.deserialize(mod),
+        )
+
 @dataclass
 class OrderSummary:
     ordered_items: List[OrderedItem]
@@ -64,6 +93,19 @@ class OrderSummary:
             [f"- {ordered_item}" for ordered_item in self.ordered_items]
         )
 
+    def serialize(self) -> str:
+        return " ".join([f"[{ordered_item.serialize()}]" for ordered_item in self.ordered_items])
+
+    @classmethod
+    def deserialize(cls, s: str) -> OrderSummary:
+        ret_val = OrderSummary(ordered_items=[])
+        regex = r"\[(.*?)\]"
+        matches = re.finditer(regex, s, re.MULTILINE)
+        for match in matches:  # type: re.Match
+            ordered_item = OrderedItem.deserialize(match.group(0))
+            ret_val.ordered_items.append(ordered_item)
+
+        return ret_val
 
 def parse_doc(doc: Doc) -> OrderSummary:
     number_token_indices = find_numbers_in_document(doc)
