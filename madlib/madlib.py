@@ -7,11 +7,14 @@ import json
 import random
 import string
 
+SAMPLES = "samples.txt"
+ANSWERS = "answers.txt"
 menus = "../webscraping/menus.json"
 ten_percent = range(0,10)
 twenty_five_percent = range(0,4)
 filler = ["Uh", "Um", "Uhhhh", "Yeah", "Hmm"]
 quantities = ["One", "Two", "Three", "Four"]
+q_to_int = {"A":1, "One":1, "Two":2, "Three":3, "Four":4}
 like = "Like"
 templates = ["Can I get", "Could I get", "Could I just get", "I'll have", "I'd like", "I'll get", "Can I have", "I'll just have", "I'll just get", "Could I please have", "Can I please get", "Can I please have", "Could I please just get", "Could I please just have", "I would like", "I will have", "I will get", "Could I please have", "Can I please get", "I would like to have", "I would like to get"]
 modify_templates = ["Actually wait, could you make it", "Could you actually make it", "Could you change it to", "Can you actually change it to", "Wait, can it be", "Wait, can you make it", "Wait, could you make it", "Wait, could you change it to", "And can it be", "Sorry, could you change it to", "And can you change it to", "Sorry, could it be", "Sorry can it be"]
@@ -19,6 +22,8 @@ also = "Also"
 conjunctions = ["and", "with"]
 thanks = [", please", ", thanks", ", thank you", ", that's it", ", that'll be it", ", that's all", ". I think that's it", ". That should be it", ". That should be all", ". That's it, I think", ". That should be all, I think", ". Alright, that's it", ". Alright, that'll be it", ". Okay, that should be it"]
 
+def answer_structure(item, q):
+    return "[" + item + " " + str(q_to_int[q]) + "]" 
 #
 def fix_capitalization(s):
     xs = s.split(" ")
@@ -140,6 +145,7 @@ def get_item(j, ks):
 
 def sentence(j, ks):
     sentence = ""
+    answer = ""
     orders = sentence_order_weighted()
     modify_item = False
     modified_item = ""
@@ -172,6 +178,8 @@ def sentence(j, ks):
             modify_item = True
             modified_item = generalize(item[0])
             original_q = q.lower()
+        else:
+            answer += answer_structure(generalize(item[0]), q) + " "
 
         sentence += generalize(item[0]) + " "
 
@@ -189,23 +197,49 @@ def sentence(j, ks):
         sentence += new_q + " "
         sentence += modified_item + " "
 
+        answer += answer_structure(modified_item, new_q)
+
     if twentyfiveP():
         sentence += random.choice(thanks) + " "
 
     sentence = sentence[:-1] + "."
 
-    return sentence
+    return [fix_capitalization(sentence), answer.lower()]
 
 def full_sample(j, ks):
-    sentences = sentence_order_weighted()
+    return sentence(j,ks)
 
-    for i in range(0, sentences):
-        print(fix_capitalization(sentence(j, ks)))
+def output_s(fs):
+    f = open(SAMPLES, "w")
+    f.write("")
+    f.close()
+
+    f = open(SAMPLES, "a")
+    
+    for x in fs:
+        f.write(x[0] + "\n")
+
+    f.close()
+
+def output_a(fs):
+    f = open(ANSWERS, "w")
+    f.write("")
+    f.close()
+
+    f = open(ANSWERS, "a")
+    for x in fs:
+        f.write(x[0] + "\n" + x[1] + "\n\n")
+
+    f.close()
 
 def main(x):
     j = open_json(menus)
+    fs = []
     for i in range(0, x):
-        full_sample(j, j.keys())
+        fs.append(full_sample(j, j.keys()))
+
+    output_s(fs)
+    output_a(fs)
 
 if __name__ == "__main__":
     main(int(sys.argv[1]))
