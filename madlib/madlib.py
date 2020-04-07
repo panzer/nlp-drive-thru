@@ -124,27 +124,20 @@ def twentyfiveP():
         return False
 
 # Open a json
-def open_json(filename):
+def open_json(filename, restaurant):
     with open(filename) as f:
         data = json.load(f)
 
-    return data
+    return data[restaurant]
 
-def get_item(j, ks):
-    r = random.choice(list(ks))
-
-    m = j[r]
-    while len(m) == 0:
-        r = random.choice(list(ks))
-        m = j[r]
-        
+def get_item(m):
     item = random.choice(range(0, len(m)))
     item_name = list(m[item].keys())[0]
     item_size = m[item][item_name]["size"]
     
     return [item_name, item_size]
 
-def sentence(j, ks):
+def sentence(j):
     sentence = ""
     answer = ""
     orders = sentence_order_weighted()
@@ -171,7 +164,7 @@ def sentence(j, ks):
         q = quantities_weighted()
         sentence += q + " "
 
-        item = get_item(j, ks)
+        item = get_item(j)
         if item[1] != "" and flip_coin():
             sentence += item[1] + " "
 
@@ -207,8 +200,8 @@ def sentence(j, ks):
 
     return [fix_capitalization(sentence), answer.lower()]
 
-def full_sample(j, ks):
-    return sentence(j,ks)
+def full_sample(j):
+    return sentence(j)
 
 def output_s(fs):
     f = open(SAMPLES, "w")
@@ -233,14 +226,16 @@ def output_a(fs):
 
     f.close()
 
-def main(x):
-    j = open_json(menus)
+def main(x, restaurant):
+    j = open_json(menus, restaurant)
     fs = []
     for i in range(0, x):
-        fs.append(full_sample(j, j.keys()))
+        fs.append(full_sample(j))
 
     output_s(fs)
     output_a(fs)
 
 if __name__ == "__main__":
-    main(int(sys.argv[1]))
+    # arg1: number of samples
+    # arg2: name of restaurant i.e. mcdonalds
+    main(int(sys.argv[1]), sys.argv[2])
