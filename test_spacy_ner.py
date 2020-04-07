@@ -73,7 +73,7 @@ class OrderedItem:
         return f"{self.menu_item} ({self.amount})"
 
     def serialize(self) -> str:
-        return f"{self.menu_item.serialize()}, {self.amount}, {self.modifier.serialize()}"
+        return f"{self.menu_item.serialize()}, {self.modifier.serialize()}, {self.amount}"
 
     @classmethod
     def deserialize(cls, s: str) -> MenuItem:
@@ -83,6 +83,13 @@ class OrderedItem:
             amount=int(amount),
             modifier=Modifier.deserialize(mod),
         )
+
+    def __eq__(self, other: OrderedItem) -> bool:
+        return all([
+            self.menu_item.name == other.menu_item.name,
+            self.amount == other.amount,
+            self.modifier.name == other.modifier.name,
+        ])
 
 @dataclass
 class OrderSummary:
@@ -107,6 +114,12 @@ class OrderSummary:
             ret_val.ordered_items.append(ordered_item)
 
         return ret_val
+
+    def __eq__(self, other: OrderSummary) -> bool:
+        if len(self.ordered_items) != len(other.ordered_items):
+            return False
+        
+        return all([a == b for a, b in zip(self.ordered_items, other.ordered_items)])
 
 def parse_doc(doc: Doc) -> OrderSummary:
     number_token_indices = find_numbers_in_document(doc)
