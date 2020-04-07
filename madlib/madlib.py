@@ -9,6 +9,7 @@ import string
 
 SAMPLES = "samples.txt"
 ANSWERS = "answers.txt"
+ENTITIES = "entities.txt"
 menus = "../webscraping/menus.json"
 ten_percent = range(0,10)
 twenty_five_percent = range(0,4)
@@ -22,6 +23,21 @@ also = "Also"
 conjunctions = ["and", "with"]
 thanks = [", please", ", thanks", ", thank you", ", that's it", ", that'll be it", ", that's all", ". I think that's it", ". That should be it", ". That should be all", ". That's it, I think", ". That should be all, I think", ". Alright, that's it", ". Alright, that'll be it", ". Okay, that should be it"]
 
+def entity_structure(sentence, items):
+    result = "["
+
+    # To prevent capitalization issues
+    s = sentence.lower()
+    for item in items:
+        result += "("
+        index = s.index(item.lower())
+        result += str(index) + ", " + str(index + len(item)) + ", "
+        result += "'MENU_ITEM'), "
+
+    result = result[:-2] + "]"
+
+    return result
+    
 def answer_structure(item, size, q):
     return "[" + item + ", " + size + ", " + str(q_to_int[q]) + "]"
 
@@ -147,6 +163,7 @@ def sentence(j):
     modified_item = ""
     original_q = ""
     original_s = ""
+    items_list = []
 
     for i in range(0, orders):
         if twentyfiveP():
@@ -178,6 +195,7 @@ def sentence(j):
             original_s = item[1]
         else:
             answer += answer_structure(generalize(item[0]), item[1], q) + " "
+            items_list.append(generalize(item[0]))
 
         sentence += generalize(item[0]) + " "
 
@@ -196,13 +214,17 @@ def sentence(j):
         sentence += modified_item + " "
 
         answer += answer_structure(modified_item, original_s, new_q)
+        items_list.append(modified_item) 
 
     if twentyfiveP():
         sentence += random.choice(thanks) + " "
 
     sentence = sentence[:-1] + "."
+    sentence = fix_capitalization(sentence)
+    answer = answer.lower()
+    entities = entity_structure(sentence, items_list)
 
-    return [fix_capitalization(sentence), answer.lower()]
+    return [sentence, answer, entities]
 
 def full_sample(j):
     return sentence(j)
@@ -225,6 +247,15 @@ def output_a(fs):
 
     f.close()
 
+def output_e(fs):
+    f = open(ENTITIES, "w")
+    f.write("")
+
+    for x in fs:
+        f.write(x[2] + "\n")
+
+    f.close()
+
 def main(x, restaurant):
     j = open_json(menus, restaurant)
     fs = []
@@ -233,6 +264,7 @@ def main(x, restaurant):
 
     output_s(fs)
     output_a(fs)
+    output_e(fs)
 
 if __name__ == "__main__":
     # arg1: number of samples
