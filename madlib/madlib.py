@@ -24,15 +24,37 @@ conjunctions = ["and", "with"]
 thanks = [", please", ", thanks", ", thank you", ", that's it", ", that'll be it", ", that's all", ". I think that's it", ". That should be it", ". That should be all", ". That's it, I think", ". That should be all, I think", ". Alright, that's it", ". Alright, that'll be it", ". Okay, that should be it"]
 
 def entity_structure(sentence, items):
+    unique_indices = []
+    # this list is to prevent repeat items
+    # that aren't meant to be modified from
+    # having an entity.
+    # for ex: someone may order chicken nuggets and chicken nuggets
+    # this would register as two items so we don't want duplicates
+    # of the same indices
+
     result = "["
 
     # To prevent capitalization issues
     s = sentence.lower()
     for item in items:
-        result += "("
-        index = s.index(item.lower())
-        result += str(index) + ", " + str(index + len(item)) + ", "
-        result += "'MENU_ITEM'), "
+        indices = []
+        i1 = s.find(item.lower())
+        if i1 not in unique_indices:
+            unique_indices.append(i1)
+            indices.append(i1)        
+
+        x = s.find(item.lower(), (i1 + len(item)))
+        while x != -1:
+            if x not in unique_indices:
+                unique_indices.append(x)
+                indices.append(x)
+                
+            x = s.find(item.lower(), (x + len(item)))
+
+        for index in indices:
+            result += "("
+            result += str(index) + ", " + str(index + len(item)) + ", "
+            result += "'MENU_ITEM'), "
 
     result = result[:-2] + "]"
 
