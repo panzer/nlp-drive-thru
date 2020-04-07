@@ -47,7 +47,7 @@ LABEL = MENU_ITEM
 # other entity types that spaCy correctly recognized before. Otherwise, your
 # model might learn the new type, but "forget" what it previously knew.
 # https://explosion.ai/blog/pseudo-rehearsal-catastrophic-forgetting
-with open(input_filepath("samplesentences.txt")) as f:
+with open(input_filepath("samples.txt")) as f:
     sentences = [line for line in f]
 
 nlp = spacy.load("en_core_web_sm")
@@ -55,8 +55,34 @@ def get_standard_entities(doc_str: str) -> List[tuple]:
     doc = nlp(doc_str)
     return [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents if ent.label_ == "CARDINAL"]
 
-with open(input_filepath("training_entities.txt")) as f:
-    entities = [{"entities": get_standard_entities(sentence) + eval(cust_labels)} for (cust_labels, sentence) in zip(f, sentences)]
+def is_overlap(span1, span2) -> bool:
+    start1, end1, _ = span1
+    start2, end2, _ = span2
+    return any([
+        start1 <= start2 <= end1,
+        start2 <= start1 <= end2,
+        start1 <= end2 <= end1,
+        start2 <= end1 <= end2,
+    ])
+
+def deconflict_entities(priority, secondary):
+    ret_val = []
+    for pspan in priority:
+        if not any([is_overlap(rspan, pspan) for rspan in ret_val]):
+            ret_val.append(pspan)
+    
+    for sspan in secondary:
+        if not any([is_overlap(pspan, sspan) for pspan in priority]):
+            ret_val.append(sspan)
+
+    return ret_val
+
+with open(input_filepath("entities.txt")) as f:
+    entities = [
+        {"entities": deconflict_entities(
+                        priority=eval(cust_labels),
+                        secondary=get_standard_entities(sentence))}
+        for (cust_labels, sentence) in zip(f, sentences)]
 
 TRAIN_DATA = list(zip(sentences, entities))
 
