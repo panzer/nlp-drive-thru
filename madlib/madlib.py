@@ -206,9 +206,6 @@ def full_sample(j):
 def output_s(fs):
     f = open(SAMPLES, "w")
     f.write("")
-    f.close()
-
-    f = open(SAMPLES, "a")
     
     for x in fs:
         f.write(x[0] + "\n")
@@ -218,9 +215,7 @@ def output_s(fs):
 def output_a(fs):
     f = open(ANSWERS, "w")
     f.write("")
-    f.close()
 
-    f = open(ANSWERS, "a")
     for x in fs:
         f.write(x[0] + "\n" + x[1] + "\n\n")
 
