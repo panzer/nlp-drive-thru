@@ -22,8 +22,8 @@ also = "Also"
 conjunctions = ["and", "with"]
 thanks = [", please", ", thanks", ", thank you", ", that's it", ", that'll be it", ", that's all", ". I think that's it", ". That should be it", ". That should be all", ". That's it, I think", ". That should be all, I think", ". Alright, that's it", ". Alright, that'll be it", ". Okay, that should be it"]
 
-def answer_structure(item, q):
-    return "[" + item + " " + str(q_to_int[q]) + "]"
+def answer_structure(item, size, q):
+    return "[" + item + ", " + size + ", " + str(q_to_int[q]) + "]"
 
 #
 def fix_capitalization(s):
@@ -43,6 +43,8 @@ def fix_capitalization(s):
 
 def generalize(w):
     x = w.lower()
+    x = x.replace(",", "")
+    
     if "burger" in x:
         return "burger"
     elif "fries" in x:
@@ -144,6 +146,7 @@ def sentence(j):
     modify_item = False
     modified_item = ""
     original_q = ""
+    original_s = ""
 
     for i in range(0, orders):
         if twentyfiveP():
@@ -172,8 +175,9 @@ def sentence(j):
             modify_item = True
             modified_item = generalize(item[0])
             original_q = q.lower()
+            original_s = item[1]
         else:
-            answer += answer_structure(generalize(item[0]), q) + " "
+            answer += answer_structure(generalize(item[0]), item[1], q) + " "
 
         sentence += generalize(item[0]) + " "
 
@@ -191,7 +195,7 @@ def sentence(j):
         sentence += new_q + " "
         sentence += modified_item + " "
 
-        answer += answer_structure(modified_item, new_q)
+        answer += answer_structure(modified_item, original_s, new_q)
 
     if twentyfiveP():
         sentence += random.choice(thanks) + " "
